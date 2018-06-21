@@ -1,5 +1,4 @@
 ﻿using Aspose.Pdf.Cloud.Sdk.Model;
-using iTextSharp.text.pdf;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.IO;
@@ -9,16 +8,14 @@ namespace AsposeBootcamp.Tests
 {
     [TestFixture]
     public class PdfFieldServiceTests
-    {  
+    {
         [Test]
-        public void UpdateField_GivenAPdfFilenameNotStoredInTheCloud_AttemptToUpdateItShouldThrowAnException()
+        public void UpdateField_GivenAPdfFilenameNotStoredInTheCloud_AttemptToUpdateItShouldReturnFileDoesNotExist()
         {
             //Arrange
-            var sut = CreateDocumentServices();
+            var sut = CreatePdfFieldService();
             const string filename = "Dummy.pdf";
-            Field field = new Field();
-            field.Name = "First Name";
-            field.Values = new List<string> { "Thabani" };
+            var field = new Field();
             var expected = "File does not exist";
 
             //Act
@@ -27,14 +24,30 @@ namespace AsposeBootcamp.Tests
             //Assert
             Assert.AreEqual(expected, actual.ErrorMessage);
         }
-    
+
+        [TestCase(" ")]
+        [TestCase("")]
+        public void UpdateField_GivenAnInvalidPdfFilename_AttemptToUpdateItShouldReturnInvalidFilename(string filename)
+        {
+            //Arrange
+            var sut = CreatePdfFieldService();
+            var field = new Field();
+            var expected = "Invalid filename";
+
+            //Act
+            var actual = sut.UpdateField(filename, field);
+
+            //Assert
+            Assert.AreEqual(expected, actual.ErrorMessage);
+        }
+
         [Test]
         public void UpdateField_GivenAPdfFilenameStoredInTheCloud_ItsFirstNameFieldShouldUpdateAndReturnStatusCodeOK()
         {
             //Arrange
-            var sut = CreateDocumentServices();
+            var sut = CreatePdfFieldService();
             const string filename = "BootcampForm.pdf";
-            Field field = new Field();
+            var field = new Field();
             field.Name = "First Name";
             field.Values = new List<string> { "Thabani" };
 
@@ -47,10 +60,10 @@ namespace AsposeBootcamp.Tests
         }
 
         [Test]
-        public void UpdateFields_GivenAPdfFilenameStoredInTheCloud_AllFieldsShouldUpdateAndReturnStatusCodeOK()
+        public void UpdateFields_GivenAValidPdfFilenameStoredInTheCloud_AllFieldsShouldUpdateAndReturnStatusCodeOK()
         {
             //Arrange
-            var sut = CreateDocumentServices();
+            var sut = CreatePdfFieldService();
             const string filename = "BootcampForm.pdf";
             var asposeFields = new Fields
             {
@@ -139,16 +152,16 @@ namespace AsposeBootcamp.Tests
         }
 
         [Test]
-        public void DisableFields_GivenAPdfFilename_ItsFirstNameSurnameAndDOBFieldShouldBeReadOnly()
+        public void DisableFields_GivenAValidPdfFilenameStoredIntheCloud_ItsFirstNameSurnameAndDOBFieldShouldBeReadOnly()
         {
             //Arrange
-            var sut = CreateDocumentServices();
+            var sut = CreatePdfFieldService();
             const string filename = "AsposeFormTest.pdf";
             const string newFileName = "ReadOnlyBootcampForm.pdf";
             var baseDirectory = TestContext.CurrentContext.TestDirectory;
             var oldPdfPath = Path.Combine(baseDirectory, filename);
             var newPdfPath = Path.Combine(baseDirectory, newFileName);
-            
+
             //Act
             sut.DisableFields(oldPdfPath, newPdfPath);
             var oldFile = File.ReadAllBytes(oldPdfPath);
@@ -158,7 +171,7 @@ namespace AsposeBootcamp.Tests
             Assert.AreNotEqual(oldFile, newFile);
         }
 
-        private static PdfFieldService CreateDocumentServices()
+        private static PdfFieldService CreatePdfFieldService()
         {
             return new PdfFieldService();
         }

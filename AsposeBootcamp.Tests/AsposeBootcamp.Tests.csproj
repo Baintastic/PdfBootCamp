@@ -70,10 +70,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="AsposeFormTest.pdf">
+    <None Include="BootcampForm.pdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="BootcampForm.pdf">
+    <None Include="DownloadedBootcampForm.pdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />

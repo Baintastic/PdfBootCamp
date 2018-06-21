@@ -1,10 +1,5 @@
 ﻿using NUnit.Framework;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AsposeBootcamp.Tests
 {
@@ -12,13 +7,13 @@ namespace AsposeBootcamp.Tests
     class PdfUploadServiceTests
     {
         [Test]
-        public void UploadPdf_GivenAPdfFilenameNotExistingInLocalStorage_UploadingThePdfToTheCloudShouldReturnFileDoesNotExist()
+        public void UploadPdf_GivenAPdfFilenameNotStoredInLocalStorage_AttemptToUploadItToTheCloudShouldReturnFileDoesNotExist()
         {
             //Arrange
             var sut = CreatePdfUploadService();
             const string filename = "Fake.pdf";
             var baseDirectory = TestContext.CurrentContext.TestDirectory;
-            var pdfPath = Path.Combine(baseDirectory,filename);
+            var pdfPath = Path.Combine(baseDirectory, filename);
             var cloudFilename = "Empty.pdf";
             var expected = "File does not exist";
 
@@ -30,7 +25,7 @@ namespace AsposeBootcamp.Tests
         }
 
         [Test]
-        public void UploadPdf_GivenAPdfFilenameExistingInLocalStorage_ShouldUploadThePdfToTheCloudAndReturnStatusCode200()
+        public void UploadPdf_GivenAPdfFilenameStoredInLocalStorage_ShouldUploadItToTheCloudAndReturnStatusCode200()
         {
             //Arrange
             var sut = CreatePdfUploadService();

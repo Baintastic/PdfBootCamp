@@ -21,17 +21,26 @@ namespace AsposeBootcamp
         public ResultsModel UpdateField(string filename, Field field)
         {
             var results = new ResultsModel();
-            try
+            if (string.IsNullOrWhiteSpace(filename))
             {
-                PdfApi target = new PdfApi(_AppKey, _AppSid);
-                results.fieldResponse = target.PutUpdateField(filename, field.Name, field);
+                results.ErrorMessage = "Invalid filename";
             }
-            catch (Exception)
+            else
             {
-                results.ErrorMessage = "File does not exist";
+                try
+                {
+                    PdfApi target = new PdfApi(_AppKey, _AppSid);
+                    results.fieldResponse = target.PutUpdateField(filename, field.Name, field);
+                }
+                catch (Exception)
+                {
+                    results.ErrorMessage = "File does not exist";
+                }
+
             }
+
             return results;
-            
+
         }
 
         public FieldsResponse UpdateFields(string filename, Fields fields)

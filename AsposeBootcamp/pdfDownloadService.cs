@@ -1,11 +1,6 @@
 ﻿using Aspose.Pdf.Cloud.Sdk.Api;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AsposeBootcamp
 {
@@ -23,26 +18,29 @@ namespace AsposeBootcamp
         public ResultsModel DownloadPdf(string filename)
         {
             var results = new ResultsModel();
-            
             if (string.IsNullOrWhiteSpace(filename))
             {
                 results.ErrorMessage = "Invalid filename";
             }
             else
             {
-                try
-                {
-                    var target = new PdfApi(_AppKey, _AppSid);
-                    var file = target.GetDownload(filename);
-                    results.output = file.Length.ToString();
-                }
-                catch (Exception)
-                {
-                    results.ErrorMessage = "File does not exist";
-                }       
+                Download(filename, results);
             }
             return results;
+        }
 
+        private void Download(string filename, ResultsModel results)
+        {
+            try
+            {
+                var target = new PdfApi(_AppKey, _AppSid);
+                var file = target.GetDownload(filename);
+                results.output = file.Length.ToString();
+            }
+            catch (Exception)
+            {
+                results.ErrorMessage = "File does not exist";
+            }
         }
     }
 }
