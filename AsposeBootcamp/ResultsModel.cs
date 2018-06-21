@@ -8,7 +8,7 @@ namespace AsposeBootcamp
         public string ErrorMessage { get; set; }
         public string output { get; set; }
         public UploadResponse uploadResponse { get; set; }
-        public FieldResponse fieldResponse { get; set; }
+        public FieldsResponse fieldsResponse { get; set; }
        
     }
 }

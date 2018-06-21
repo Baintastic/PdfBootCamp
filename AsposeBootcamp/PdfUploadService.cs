@@ -22,11 +22,9 @@ namespace AsposeBootcamp
             if (!File.Exists(pdfPath))
             {
                 results.ErrorMessage = "File does not exist";
+                return results;
             }
-            else
-            {
-                Upload(pdfPath, filename, results);
-            }
+            Upload(pdfPath, filename, results);
             return results;
         }
 

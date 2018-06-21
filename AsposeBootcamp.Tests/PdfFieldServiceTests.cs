@@ -15,11 +15,24 @@ namespace AsposeBootcamp.Tests
             //Arrange
             var sut = CreatePdfFieldService();
             const string filename = "Dummy.pdf";
-            var field = new Field();
+            var asposeFields = new Fields
+            {
+                List = new List<Field>
+                {
+                    new Field
+                    {
+                        Name = filename,
+                        Values = new List<string>
+                        {
+                            "Tom"
+                        }
+                    }
+                }
+            };
             var expected = "File does not exist";
 
             //Act
-            var actual = sut.UpdateField(filename, field);
+            var actual = sut.UpdateFields(filename, asposeFields);
 
             //Assert
             Assert.AreEqual(expected, actual.ErrorMessage);
@@ -27,36 +40,32 @@ namespace AsposeBootcamp.Tests
 
         [TestCase(" ")]
         [TestCase("")]
+        [TestCase(null)]
         public void UpdateField_GivenAnInvalidPdfFilename_AttemptToUpdateItShouldReturnInvalidFilename(string filename)
         {
             //Arrange
             var sut = CreatePdfFieldService();
-            var field = new Field();
+            var asposeFields = new Fields
+            {
+                List = new List<Field>
+                {
+                    new Field
+                    {
+                        Name = filename,
+                        Values = new List<string>
+                        {
+                            "Tom"
+                        }
+                    }
+                }
+            };
             var expected = "Invalid filename";
 
             //Act
-            var actual = sut.UpdateField(filename, field);
+            var actual = sut.UpdateFields(filename, asposeFields);
 
             //Assert
             Assert.AreEqual(expected, actual.ErrorMessage);
-        }
-
-        [Test]
-        public void UpdateField_GivenAPdfFilenameStoredInTheCloud_ItsFirstNameFieldShouldUpdateAndReturnStatusCodeOK()
-        {
-            //Arrange
-            var sut = CreatePdfFieldService();
-            const string filename = "BootcampForm.pdf";
-            var field = new Field();
-            field.Name = "First Name";
-            field.Values = new List<string> { "Thabani" };
-
-            //Act
-            var actual = sut.UpdateField(filename, field);
-
-            //Assert
-            Assert.AreEqual(HttpStatusCode.OK, actual.fieldResponse.Code);
-            Assert.AreEqual("Thabani", field.Values[0]);
         }
 
         [Test]
@@ -148,7 +157,7 @@ namespace AsposeBootcamp.Tests
             var actual = sut.UpdateFields(filename, asposeFields);
 
             //Assert
-            Assert.AreEqual(HttpStatusCode.OK, actual.Code);
+            Assert.AreEqual(HttpStatusCode.OK, actual.fieldsResponse.Code);
         }
 
         [Test]

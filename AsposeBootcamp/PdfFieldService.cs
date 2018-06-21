@@ -18,35 +18,26 @@ namespace AsposeBootcamp
             _AppSid = ConfigurationManager.AppSettings["APP_SID"]; ;
         }
 
-        public ResultsModel UpdateField(string filename, Field field)
+        
+        public ResultsModel UpdateFields(string filename, Fields fields)
         {
             var results = new ResultsModel();
             if (string.IsNullOrWhiteSpace(filename))
             {
                 results.ErrorMessage = "Invalid filename";
+                return results;
             }
-            else
+            try
             {
-                try
-                {
-                    PdfApi target = new PdfApi(_AppKey, _AppSid);
-                    results.fieldResponse = target.PutUpdateField(filename, field.Name, field);
-                }
-                catch (Exception)
-                {
-                    results.ErrorMessage = "File does not exist";
-                }
-
+                var target = new PdfApi(_AppKey, _AppSid);
+                results.fieldsResponse = target.PutUpdateFields(filename, fields);              
             }
-
+            catch (Exception)
+            {
+                results.ErrorMessage = "File does not exist";
+            }
             return results;
-
-        }
-
-        public FieldsResponse UpdateFields(string filename, Fields fields)
-        {
-            PdfApi target = new PdfApi(_AppKey, _AppSid);
-            return target.PutUpdateFields(filename, fields);
+           
         }
 
         public void DisableFields(string oldPdfPath, string newPdfPath)

@@ -21,11 +21,9 @@ namespace AsposeBootcamp
             if (string.IsNullOrWhiteSpace(filename))
             {
                 results.ErrorMessage = "Invalid filename";
+                return results;
             }
-            else
-            {
-                Download(filename, results);
-            }
+            Download(filename, results);
             return results;
         }
 
