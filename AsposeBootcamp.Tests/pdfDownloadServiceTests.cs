@@ -25,6 +25,7 @@ namespace AsposeBootcamp.Tests
 
         [TestCase(" ")]
         [TestCase("")]
+        [TestCase(null)]
         public void DownloadPdf_GivenAnInvalidPdfFilename_AttemptToDownloadItShouldReturnInvalidFilename(string filename)
         {
             //Arrange
@@ -41,16 +42,16 @@ namespace AsposeBootcamp.Tests
         [Test]
         public void DownloadPdf_GivenAValidPdfFilenameStoredInTheCloud_ShouldDownloadAndReturnSameNumberOfBytesAsItsLocalFile()
         {
-            //Assert
+            //Arrange
             var sut = CreatePdfDownloadService();
             const string cloudFilename = "BootcampForm.pdf";
             const string localFilename = "DownloadedBootcampForm.pdf";
-            //Act
-            var actual = Int32.Parse(sut.DownloadPdf(cloudFilename).output);
-
             var baseDirectory = TestContext.CurrentContext.TestDirectory;
             var localPdfPath = Path.Combine(baseDirectory, localFilename);
             var localFile = File.ReadAllBytes(localPdfPath).Length;
+
+            //Act
+            var actual = Int32.Parse(sut.DownloadPdf(cloudFilename).output);
 
             //Assert
             Assert.AreEqual(localFile, actual);

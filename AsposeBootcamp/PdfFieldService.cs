@@ -40,15 +40,15 @@ namespace AsposeBootcamp
            
         }
 
-        public void DisableFields(string oldPdfPath, string newPdfPath)
+        public void DisableFields(string oldPdfPath, string newPdfPath, string[] fieldsToDisable)
         {
             PdfReader reader = new PdfReader(oldPdfPath);
             using (PdfStamper stamper = new PdfStamper(reader, new FileStream(newPdfPath, FileMode.Create)))
             {
                 AcroFields form = stamper.AcroFields;
-                form.SetFieldProperty("First Name", "setfflags", PdfFormField.FF_READ_ONLY, null);
-                form.SetFieldProperty("Surname", "setfflags", PdfFormField.FF_READ_ONLY, null);
-                form.SetFieldProperty("Date of Birth", "setfflags", PdfFormField.FF_READ_ONLY, null);
+                for (int i = 0; i < fieldsToDisable.Length; i++) {
+                    form.SetFieldProperty(fieldsToDisable[i], "setfflags", PdfFormField.FF_READ_ONLY, null);
+                }
             }
         }
     }

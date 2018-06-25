@@ -167,12 +167,13 @@ namespace AsposeBootcamp.Tests
             var sut = CreatePdfFieldService();
             const string filename = "AsposeFormTest.pdf";
             const string newFileName = "ReadOnlyBootcampForm.pdf";
+            var fieldsToDisable = new[]{ "First Name", "Surname" , "Date of Birth" };
             var baseDirectory = TestContext.CurrentContext.TestDirectory;
             var oldPdfPath = Path.Combine(baseDirectory, filename);
             var newPdfPath = Path.Combine(baseDirectory, newFileName);
 
             //Act
-            sut.DisableFields(oldPdfPath, newPdfPath);
+            sut.DisableFields(oldPdfPath, newPdfPath, fieldsToDisable);
             var oldFile = File.ReadAllBytes(oldPdfPath);
             var newFile = File.ReadAllBytes(newPdfPath);
 
